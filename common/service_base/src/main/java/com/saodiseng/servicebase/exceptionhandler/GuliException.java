@@ -15,5 +15,4 @@ public class GuliException extends RuntimeException {
     private String msg;//异常信息
 
 
-
 }
