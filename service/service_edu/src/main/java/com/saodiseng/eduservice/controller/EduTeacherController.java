@@ -130,6 +130,9 @@ public class EduTeacherController {
             wrapper.le("gmt_modified",end);
         }
 
+        //排序
+        wrapper.orderByDesc("gmt_create");
+
         //调用方法实现查询带分页功能
         teacherService.page(pageTeacher,wrapper);
 
@@ -142,6 +145,7 @@ public class EduTeacherController {
 
     //添加讲师接口的方法    首先应该想到某些字段要自动填充      添加使用Post方法提交-参数是对象
     @PostMapping("addTeacher")
+    @CrossOrigin
     public R addTeacher(@RequestBody EduTeacher eduTeacher){
 
         boolean save = teacherService.save(eduTeacher);
