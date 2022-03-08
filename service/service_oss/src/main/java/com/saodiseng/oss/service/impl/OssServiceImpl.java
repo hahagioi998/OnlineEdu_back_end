@@ -6,11 +6,14 @@ import com.aliyun.oss.OSSClientBuilder;
 import com.aliyun.oss.OSSException;
 import com.saodiseng.oss.service.OssService;
 import com.saodiseng.oss.utils.ConstantProperties;
+import org.joda.time.DateTime;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Date;
+import java.util.UUID;
 
 @Service
 public class OssServiceImpl implements OssService {
@@ -38,13 +41,26 @@ public class OssServiceImpl implements OssService {
 
             //获取文件名称
             String originalFilename = file.getOriginalFilename();
+
+            //文件名添加唯一值，使名字不重复
+            //aiydu-asda-3141-asfd
+            String uuid = UUID.randomUUID().toString().replaceAll("-","");
+            String filename = uuid + originalFilename;
+
+            //文件按日期分类    2019/2/22/1.jpg
+            //获取当前日期
+            String datePath = new DateTime().toString("yyyy/MM/dd");
+
+            //拼接
+            filename = datePath+"/"+filename;
+
             // 创建PutObject请求。
             //第二个参数 上传到oss文件路径和文件名称   aa/bb/1.jpg
-            ossClient.putObject(bucketName, originalFilename, inputStream);
+            ossClient.putObject(bucketName, filename, inputStream);
 
             //返回上传之后的路径 需手动拼接
             // https://guli-edu-yt.oss-cn-chengdu.aliyuncs.com/%E8%AF%BE%E7%A8%8B%E8%A1%A8.png
-            String url = "https://" + bucketName + "." + endpoint + "/" + originalFilename;
+            String url = "https://" + bucketName + "." + endpoint + "/" + filename;
             return url;
         } catch (OSSException oe) {
             System.out.println("Caught an OSSException, which means your request made it to OSS, "
