@@ -2,6 +2,7 @@ package com.saodiseng.eduservice.controller;
 
 
 import com.saodiseng.commonutils.R;
+import com.saodiseng.eduservice.entity.EduCourse;
 import com.saodiseng.eduservice.entity.vo.CourseInfoVo;
 import com.saodiseng.eduservice.service.EduCourseService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,13 @@ public class EduCourseController {
 
         String id = eduCourseService.saveCourseInfo(courseInfoVo);
         return R.ok().data("courseId",id);
+    }
+
+    //根据课程id查询课程信息
+    @GetMapping("getCourse/{id}")
+    public R checkCourseInfo(@PathVariable String id){
+        CourseInfoVo courseInfoVo = eduCourseService.getCourseInfo(id);
+        return R.ok().data("courseInfoVo",courseInfoVo);
     }
 }
 
