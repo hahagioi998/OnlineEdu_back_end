@@ -26,8 +26,6 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
 
     @Autowired
     private EduCourseDescriptionService eduCourseDescriptionService;
-    @Autowired
-    private EduCourseService eduCourseService;
 
     //添加课程基本信息的方法
     @Override
@@ -57,10 +55,10 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
     @Override
     public CourseInfoVo getCourseInfo(String id) {
         CourseInfoVo courseInfoVo = new CourseInfoVo();
-        EduCourse byId = eduCourseService.getById(id);
-        EduCourseDescription byId1 = eduCourseDescriptionService.getById(id);
-        BeanUtils.copyProperties(byId,courseInfoVo);
-        BeanUtils.copyProperties(byId1,courseInfoVo);
+        EduCourse eduCourse = baseMapper.selectById(id); //无需注入
+        EduCourseDescription courseDescription = eduCourseDescriptionService.getById(id);
+        BeanUtils.copyProperties(eduCourse,courseInfoVo);
+        BeanUtils.copyProperties(courseDescription,courseInfoVo);
         return courseInfoVo;
     }
 }
