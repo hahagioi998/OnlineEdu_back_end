@@ -6,8 +6,11 @@ import com.saodiseng.eduservice.entity.EduCourse;
 import com.saodiseng.eduservice.entity.vo.CourseInfoVo;
 import com.saodiseng.eduservice.entity.vo.CoursePublishVo;
 import com.saodiseng.eduservice.service.EduCourseService;
+import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * <p>
@@ -60,6 +63,14 @@ public class EduCourseController {
         course.setStatus("Normal");
         eduCourseService.updateById(course);
         return R.ok();
+    }
+
+    //课程列表功能
+    //TODO 完善条件查询带分页
+    @GetMapping
+    public R getCourseList(){
+        List<EduCourse> list = eduCourseService.list(null);
+        return R.ok().data("list",list);
     }
 }
 
