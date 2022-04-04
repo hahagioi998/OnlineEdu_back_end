@@ -51,5 +51,15 @@ public class EduCourseController {
         CoursePublishVo publishVo = eduCourseService.publishCourseInfo(id);
         return R.ok().data("publishCourse",publishVo);
     }
+
+    //课程最终发布   修改课程状态即可
+    @PostMapping("publishCourse/{id}")
+    public R publishCourse(@PathVariable String id){
+        EduCourse course = new EduCourse();
+        course.setId(id);
+        course.setStatus("Normal");
+        eduCourseService.updateById(course);
+        return R.ok();
+    }
 }
 
