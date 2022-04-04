@@ -9,6 +9,7 @@ import com.saodiseng.eduservice.mapper.EduChapterMapper;
 import com.saodiseng.eduservice.service.EduChapterService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.saodiseng.eduservice.service.EduVideoService;
+import com.saodiseng.servicebase.exceptionhandler.GuliException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -73,5 +74,20 @@ public class EduChapterServiceImpl extends ServiceImpl<EduChapterMapper, EduChap
         }
         //4. 遍历查询小节list集合，进行封装
         return finalList;
+    }
+
+    //删除章节的方法   章节下有小节不让删， 没有了才能删
+    @Override
+    public boolean deleteChapter(String chapterId) {
+        //根据章节Id查小节         如果查询出数据 不删除
+        QueryWrapper<EduVideo> wrapper = new QueryWrapper<>();
+        wrapper.eq("chapter_id",chapterId);
+        int count = eduVideoService.count(wrapper);  //只想知道对应的id 的小节中有没有数据
+        if (count > 0) {
+            return false;
+        } else {
+            int result = baseMapper.deleteById(chapterId);
+            return result > 0;
+        }
     }
 }
