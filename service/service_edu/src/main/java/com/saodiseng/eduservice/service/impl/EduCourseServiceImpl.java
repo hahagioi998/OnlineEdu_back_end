@@ -3,6 +3,7 @@ package com.saodiseng.eduservice.service.impl;
 import com.saodiseng.eduservice.entity.EduCourse;
 import com.saodiseng.eduservice.entity.EduCourseDescription;
 import com.saodiseng.eduservice.entity.vo.CourseInfoVo;
+import com.saodiseng.eduservice.entity.vo.CoursePublishVo;
 import com.saodiseng.eduservice.mapper.EduCourseMapper;
 import com.saodiseng.eduservice.service.EduCourseDescriptionService;
 import com.saodiseng.eduservice.service.EduCourseService;
@@ -79,5 +80,13 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
         BeanUtils.copyProperties(courseInfoVo,eduCourseDescription);
         //2修改描述信息
         eduCourseDescriptionService.updateById(eduCourseDescription);
+    }
+
+    //根据课程id查询课程确认信息
+    @Override
+    public CoursePublishVo publishCourseInfo(String id) {
+        //调用mapper
+        CoursePublishVo publishCourseInfo = baseMapper.getPublishCourseInfo(id);
+        return publishCourseInfo;
     }
 }

@@ -4,6 +4,7 @@ package com.saodiseng.eduservice.controller;
 import com.saodiseng.commonutils.R;
 import com.saodiseng.eduservice.entity.EduCourse;
 import com.saodiseng.eduservice.entity.vo.CourseInfoVo;
+import com.saodiseng.eduservice.entity.vo.CoursePublishVo;
 import com.saodiseng.eduservice.service.EduCourseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -42,6 +43,13 @@ public class EduCourseController {
     public R updateCourseInfo(@RequestBody CourseInfoVo courseInfoVo){
         eduCourseService.updateCourseInfo(courseInfoVo);
         return R.ok();
+    }
+
+    //根据课程id查询课程确认信息
+    @GetMapping("getPublishCourseInfo/{id}")
+    public R getPublishCourseInfo(@PathVariable String id){
+        CoursePublishVo publishVo = eduCourseService.publishCourseInfo(id);
+        return R.ok().data("publishCourse",publishVo);
     }
 }
 

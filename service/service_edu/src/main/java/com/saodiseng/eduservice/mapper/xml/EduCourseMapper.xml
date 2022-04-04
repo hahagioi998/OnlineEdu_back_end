@@ -2,4 +2,23 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.saodiseng.eduservice.mapper.EduCourseMapper">
 
+    <!--    sql根据课程id查询课程确认信息-->
+    <select id="getPublishCourseInfo" parameterType="String"
+            resultType="com.saodiseng.eduservice.entity.vo.CoursePublishVo">
+        SELECT ec.id,
+               ec.title,
+               ec.price,
+               ec.lesson_num as lessonNum,
+               ec.cover,
+               ecd.description,
+               et.name as teacherName,
+               es1.title as subjectLevelOne,
+               es2.title as subjectLevelTwo
+        FROM edu_course ec
+                 LEFT Outer join edu_course_description ecd on ec.id = ecd.id
+                 LEFT Outer join edu_teacher et on ec.teacher_id = et.id
+                 LEFT Outer join edu_subject es1 on ec.subject_parent_id = es1.id
+                 LEFT Outer join edu_subject es2 on ec.subject_id = es2.id
+        WHERE ec.id = #{courseId}
+    </select>
 </mapper>
