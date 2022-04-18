@@ -52,5 +52,7 @@ public class EduVideoController {
         videoService.updateById(eduVideo);
         return R.ok();
     }
+
+
 }
 
