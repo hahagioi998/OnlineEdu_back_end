@@ -2,10 +2,13 @@ package com.saodiseng.eduservice.controller;
 
 
 import com.saodiseng.commonutils.R;
+import com.saodiseng.eduservice.client.VodClient;
 import com.saodiseng.eduservice.entity.EduChapter;
 import com.saodiseng.eduservice.entity.EduVideo;
 import com.saodiseng.eduservice.service.EduVideoService;
+import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -22,7 +25,10 @@ import org.springframework.web.bind.annotation.*;
 public class EduVideoController {
     @Autowired
     private EduVideoService videoService;
-
+    
+    //注入vodClient
+    @Autowired
+    private VodClient vodClient;
     //添加小节'
     @PostMapping("addVideo")
     public R addVideo(@RequestBody EduVideo eduVideo){
@@ -34,6 +40,13 @@ public class EduVideoController {
     //TODO 删除需要完善，删除小节时，阿里云视频也需要删除（用edu模块调用vod中的方法，微服务）
     @DeleteMapping("{id}")
     public R deleteVideo(@PathVariable String id){
+        //根据小节id获取视频id，然后删除
+        EduVideo eduVideo = videoService.getById(id);
+        String videoSourceId = eduVideo.getVideoSourceId();
+        if(!StringUtils.isEmpty(videoSourceId)){
+            //根据视频id，远程调用实现视频删除
+            vodClient.removeAlyVideo(videoSourceId);
+        }
         videoService.removeById(id);
         return R.ok();
     }
