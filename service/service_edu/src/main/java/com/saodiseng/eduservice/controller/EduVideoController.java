@@ -37,7 +37,7 @@ public class EduVideoController {
     }
 
     //删除小节
-    //TODO 删除需要完善，删除小节时，阿里云视频也需要删除（用edu模块调用vod中的方法，微服务）
+    //删除小节时，阿里云视频也需要删除（用edu模块调用vod中的方法，微服务）
     @DeleteMapping("{id}")
     public R deleteVideo(@PathVariable String id){
         //根据小节id获取视频id，然后删除
