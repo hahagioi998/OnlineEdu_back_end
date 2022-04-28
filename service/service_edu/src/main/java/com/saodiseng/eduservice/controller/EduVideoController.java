@@ -6,6 +6,7 @@ import com.saodiseng.eduservice.client.VodClient;
 import com.saodiseng.eduservice.entity.EduChapter;
 import com.saodiseng.eduservice.entity.EduVideo;
 import com.saodiseng.eduservice.service.EduVideoService;
+import com.saodiseng.servicebase.exceptionhandler.GuliException;
 import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
@@ -45,7 +46,10 @@ public class EduVideoController {
         String videoSourceId = eduVideo.getVideoSourceId();
         if(!StringUtils.isEmpty(videoSourceId)){
             //根据视频id，远程调用实现视频删除
-            vodClient.removeAlyVideo(videoSourceId);
+            R result = vodClient.removeAlyVideo(videoSourceId);   //返回R对象
+            if (result.getCode() == 20001) {
+                throw new GuliException(20001,"删除视频失败，熔断器。。。");
+            }
         }
         videoService.removeById(id);
         return R.ok();
